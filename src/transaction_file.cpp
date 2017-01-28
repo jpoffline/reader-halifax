@@ -88,11 +88,23 @@ void TRANSACTION_FILE::create_time_series()
     for(int i = 0; i < dates.size(); i++)
     {   
         auto d = dates.get(i);
+
         if(date != d)
         {
             time_series.add_date(d);
             date = d;
         }
+        
+        time_series.add_to_top(
+            HALIFAX_TRANSACTION_ROW(
+                dates.get(i), types.get(i), sort_codes.get(i),
+                account_numbers.get(i), descriptions.get(i),
+                debit_amounts.get(i), credit_amounts.get(i),
+                balances.get(i)
+            )
+        );
+
+        
     }
 }
 

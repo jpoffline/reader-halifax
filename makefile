@@ -1,4 +1,4 @@
-OBJECTS = main.o utils.o dateutils.o csv.o transaction_file.o
+OBJECTS = main.o utils.o dateutils.o csv.o transaction_file.o time_series.o
 INC = -Wall -I/usr/local/include
 LIBS = -L/usr/local/lib -lm -lgsl -lgslcblas 
 CC = g++ -std=c++0x

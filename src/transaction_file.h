@@ -1,6 +1,6 @@
 /*
 // HEADER:
-//Transaction Date,
+Transaction Date,
 Transaction Type,
 Sort Code,
 Account Number,
@@ -16,28 +16,53 @@ Balance,
 #include <fstream>
 #include <sstream>
 #include <vector>
+#include <iomanip>
 #include "utils.h"
 #include "dateutils.h"
+#include "time_series.h"
+#include "halifax_transaction_row.h"
 
 
-struct HALIFAX_TRANSACTION_ROW
-{
-    std::string date; // DD/MM/YYYY-format
-    std::string type;
-    std::string sort_code;
-    std::string account_number;
-    std::string description;
-    float debit_amount;
-    float credit_amount;
-    float balance;
+class TIMESERIES_date {
+
+    private:
+        std::string date;
+        std::vector<HALIFAX_TRANSACTION_ROW> items;
+        float total_credit;
+        float total_debit;
+        float final_balance;
+    public:
+        TIMESERIES_date(std::string d) 
+        : date(d), total_credit(0), total_debit(0), final_balance(0) {};
+        void add_item(HALIFAX_TRANSACTION_ROW item);
+        void print(std::ostream& whereto);
+        void print();
+
 };
 
+class TIMESERIES {
+    
+    private:
+        std::vector<TIMESERIES_date> series;
+    
+    public:
+        TIMESERIES(); 
+        void add_date(std::string d);
+        void add_to_top();
+        void add_to_top(HALIFAX_TRANSACTION_ROW htr);
+        void print();
+
+};
+
+
 template<class T>
-class TRANSACTION_ITEMS{
+class TRANSACTION_ITEMS {
+
     private:
         std::vector<T> items;
         std::vector<std::pair<T, int> > unique_items;
         bool has_collapsed_to_unique;
+
     public:
         TRANSACTION_ITEMS()
         {
@@ -117,42 +142,6 @@ class TRANSACTION_ITEMS{
             for(auto& unique : unique_items)
             {
                 std::cout << unique.first << " " << unique.second << std::endl;
-            }
-        }
-};
-
-class TIMESERIES_date{
-    private:
-        std::string date;
-        std::vector<HALIFAX_TRANSACTION_ROW> items;
-    public:
-        TIMESERIES_date(std::string d) : date(d) {};
-        void add_item(HALIFAX_TRANSACTION_ROW item)
-        {
-            items.push_back(item);
-        }
-        void print()
-        {
-            std::cout << date << std::endl;
-        }
-
-
-};
-
-class TIMESERIES{
-    private:
-        std::vector<TIMESERIES_date> series;
-    public:
-        TIMESERIES(){}  
-        void add_date(std::string d)
-        {
-            series.push_back(TIMESERIES_date(d));
-        }
-        void print()
-        {
-            for(auto& t : series)
-            {
-                t.print();
             }
         }
 };
