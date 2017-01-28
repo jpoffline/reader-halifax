@@ -22,5 +22,6 @@ int main(){
     //htf.print_balances();
     //htf.print_date_description();
     htf.print_unique_descriptions();
-    
+    htf.create_time_series();
+    htf.print_time_series();
 }

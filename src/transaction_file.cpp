@@ -5,8 +5,6 @@
 void TRANSACTION_FILE::read_file(std::string filename)
 {
     std::ifstream myfilestream(filename);
-    
-
     while(!myfilestream.eof())
     {
         std::string line;
@@ -14,11 +12,7 @@ void TRANSACTION_FILE::read_file(std::string filename)
         while(std::getline(myfilestream, line))
         {
             std::istringstream iss(line);
-            
-            
-            
             {
-                
                 std::string v;
                 std::string d,t,s,a,desc;
                 std::string das, cas, bals;
@@ -46,12 +40,9 @@ void TRANSACTION_FILE::read_file(std::string filename)
                 balances.add(bal);
                 
             }
-            
         }
     }
     myfilestream.close();
-
-
 
 }
 
@@ -89,4 +80,23 @@ void TRANSACTION_FILE::print_date_description()
 void TRANSACTION_FILE::print_unique_descriptions()
 {
     descriptions.print_unique();
+}
+
+void TRANSACTION_FILE::create_time_series()
+{
+    std::string date = "";
+    for(int i = 0; i < dates.size(); i++)
+    {   
+        auto d = dates.get(i);
+        if(date != d)
+        {
+            time_series.add_date(d);
+            date = d;
+        }
+    }
+}
+
+void TRANSACTION_FILE::print_time_series()
+{
+    time_series.print();
 }
