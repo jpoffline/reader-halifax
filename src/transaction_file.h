@@ -168,4 +168,4 @@ class TRANSACTION_FILE
         void create_time_series();
         void print_time_series();
         
-}; // comment
+}; 
