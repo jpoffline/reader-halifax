@@ -54,15 +54,35 @@ class TIMESERIES {
 
 };
 
+template<class T>
+struct UNIQUE_ITEM{
+    T name;
+    std::vector<int> indexes;
+    std::vector<float> credits;
+    std::vector<float> debits;
+    UNIQUE_ITEM(T n, int i) : name(n){add_idx(i);};
+
+    void add_idx(int i)
+    {
+        indexes.push_back(i);
+    }
+    friend std::ostream &operator << (std::ostream &output, const UNIQUE_ITEM<T> &u) 
+    { 
+        output << u.name << "\n   #instances: " << u.indexes.size() << " / indexes: ";
+        for(auto& i : u.indexes) output << i << " "; 
+        output << "\n";
+        return output;       
+      }
+};
 
 template<class T>
 class TRANSACTION_ITEMS {
 
     private:
         std::vector<T> items;
-        std::vector<std::pair<T, int> > unique_items;
-        bool has_collapsed_to_unique;
 
+        bool has_collapsed_to_unique;
+        std::vector<UNIQUE_ITEM<T> > unique_items_new;
     public:
         TRANSACTION_ITEMS()
         {
@@ -111,24 +131,27 @@ class TRANSACTION_ITEMS {
             // Method to collapse the items to just the unique ones;
             // counts up how many instances appeared in the original.
             // Stores the unique items in a vector of pairs; 
-            // first = item
-            // second = count(item) in original list.
+            int idx = 0;
             for(auto &item : items)
             {
+                
                 bool found = false;
-                for(auto & unique : unique_items)
+                for(auto& u : unique_items_new)
                 {
-                    if(unique.first == item)
+                    if(u.name == item)
                     {
-                        unique.second ++;
+                        u.add_idx(idx);
                         found = true;
                         break;
                     }
                 }
+
                 if(!found)
                 {
-                    unique_items.push_back(make_pair(item, 1));
+                    unique_items_new.push_back(UNIQUE_ITEM<T>(item, idx));
                 }
+                idx ++;
+
             }
             has_collapsed_to_unique = true;
         }
@@ -139,9 +162,10 @@ class TRANSACTION_ITEMS {
             {
                 collapse_to_unique();
             }
-            for(auto& unique : unique_items)
+            
+            for(auto& unique_item : unique_items_new)
             {
-                std::cout << unique.first << " " << unique.second << std::endl;
+                std::cout << unique_item << std::endl;
             }
         }
 };

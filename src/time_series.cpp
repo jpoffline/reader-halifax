@@ -35,7 +35,10 @@ void TIMESERIES_date::print()
 
 
 
-TIMESERIES::TIMESERIES(){}  
+TIMESERIES::TIMESERIES()
+{
+    
+}  
 
 void TIMESERIES::add_date(std::string d)
 {
