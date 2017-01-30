@@ -191,5 +191,6 @@ class TRANSACTION_FILE
         void print_unique_descriptions();
         void create_time_series();
         void print_time_series();
+        HALIFAX_TRANSACTION_ROW get_row_for_idx(int i);
         
 }; 

@@ -95,15 +95,7 @@ void TRANSACTION_FILE::create_time_series()
             date = d;
         }
         
-        time_series.add_to_top(
-            HALIFAX_TRANSACTION_ROW(
-                dates.get(i), types.get(i), sort_codes.get(i),
-                account_numbers.get(i), descriptions.get(i),
-                debit_amounts.get(i), credit_amounts.get(i),
-                balances.get(i)
-            )
-        );
-
+        time_series.add_to_top(get_row_for_idx(i));
         
     }
 }
@@ -111,4 +103,18 @@ void TRANSACTION_FILE::create_time_series()
 void TRANSACTION_FILE::print_time_series()
 {
     time_series.print();
+}
+
+HALIFAX_TRANSACTION_ROW TRANSACTION_FILE::get_row_for_idx(int i)
+{
+    return HALIFAX_TRANSACTION_ROW(
+        dates.get(i),
+        types.get(i),
+        sort_codes.get(i),
+        account_numbers.get(i),
+        descriptions.get(i),
+        debit_amounts.get(i),
+        credit_amounts.get(i),
+        balances.get(i)
+    );
 }
