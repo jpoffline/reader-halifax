@@ -21,7 +21,6 @@ int main(){
     htf.read_file("data/tmp.csv");
     //htf.print_balances();
     //htf.print_date_description();
-    std::cout << "about to unique" << std::endl;
     htf.print_unique_descriptions();
     //htf.create_time_series();
     //htf.print_time_series();

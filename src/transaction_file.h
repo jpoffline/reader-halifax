@@ -21,7 +21,8 @@ Balance,
 #include "dateutils.h"
 #include "time_series.h"
 #include "halifax_transaction_row.h"
-
+#include "unique_item.h"
+#include "transaction_items.h"
 
 class TIMESERIES_date {
 
@@ -54,121 +55,8 @@ class TIMESERIES {
 
 };
 
-template<class T>
-struct UNIQUE_ITEM{
-    T name;
-    std::vector<int> indexes;
-    std::vector<float> credits;
-    std::vector<float> debits;
-    UNIQUE_ITEM(T n, int i) : name(n){add_idx(i);};
 
-    void add_idx(int i)
-    {
-        indexes.push_back(i);
-    }
-    friend std::ostream &operator << (std::ostream &output, const UNIQUE_ITEM<T> &u) 
-    { 
-        output << u.name << "\n   #instances: " << u.indexes.size() << " / indexes: ";
-        for(auto& i : u.indexes) output << i << " "; 
-        output << "\n";
-        return output;       
-      }
-};
 
-template<class T>
-class TRANSACTION_ITEMS {
-
-    private:
-        std::vector<T> items;
-
-        bool has_collapsed_to_unique;
-        std::vector<UNIQUE_ITEM<T> > unique_items;
-    public:
-        TRANSACTION_ITEMS()
-        {
-            has_collapsed_to_unique = false;
-        }
-        void add(T i)
-        {
-            items.push_back(i);
-            if(has_collapsed_to_unique)
-            {
-                has_collapsed_to_unique = false;
-            }
-        }
-        T get(int i)
-        {
-            return items[i];
-        }
-        void print(std::ostream& whereto)
-        {
-            for(auto &i : items) 
-            {
-                whereto << i << " -> ";
-            }
-        }
-        void print()
-        {
-            print(std::cout);
-        }
-        void print(int i, std::ostream& whereto)
-        {
-            whereto << items[i];
-        }
-        
-        void print(int i)
-        {
-            print(i,std::cout);
-        }
-        
-        size_t size()
-        {
-            return items.size();
-        }
-
-        void collapse_to_unique()
-        {
-            // Method to collapse the items to just the unique ones;
-            // counts up how many instances appeared in the original.
-            // Stores the unique items in a vector of pairs; 
-            int idx = 0;
-            for(auto &item : items)
-            {
-                
-                bool found = false;
-                for(auto& u : unique_items)
-                {
-                    if(u.name == item)
-                    {
-                        u.add_idx(idx);
-                        found = true;
-                        break;
-                    }
-                }
-
-                if(!found)
-                {
-                    unique_items.push_back(UNIQUE_ITEM<T>(item, idx));
-                }
-                idx ++;
-
-            }
-            has_collapsed_to_unique = true;
-        }
-
-        void print_unique()
-        {
-            if(!has_collapsed_to_unique)
-            {
-                collapse_to_unique();
-            }
-            
-            for(auto& unique_item : unique_items)
-            {
-                std::cout << unique_item << std::endl;
-            }
-        }
-};
 
 
 class TRANSACTION_FILE
@@ -194,3 +82,4 @@ class TRANSACTION_FILE
         HALIFAX_TRANSACTION_ROW get_row_for_idx(int i);
         
 }; 
+
