@@ -82,7 +82,7 @@ class TRANSACTION_ITEMS {
         std::vector<T> items;
 
         bool has_collapsed_to_unique;
-        std::vector<UNIQUE_ITEM<T> > unique_items_new;
+        std::vector<UNIQUE_ITEM<T> > unique_items;
     public:
         TRANSACTION_ITEMS()
         {
@@ -136,7 +136,7 @@ class TRANSACTION_ITEMS {
             {
                 
                 bool found = false;
-                for(auto& u : unique_items_new)
+                for(auto& u : unique_items)
                 {
                     if(u.name == item)
                     {
@@ -148,7 +148,7 @@ class TRANSACTION_ITEMS {
 
                 if(!found)
                 {
-                    unique_items_new.push_back(UNIQUE_ITEM<T>(item, idx));
+                    unique_items.push_back(UNIQUE_ITEM<T>(item, idx));
                 }
                 idx ++;
 
@@ -163,7 +163,7 @@ class TRANSACTION_ITEMS {
                 collapse_to_unique();
             }
             
-            for(auto& unique_item : unique_items_new)
+            for(auto& unique_item : unique_items)
             {
                 std::cout << unique_item << std::endl;
             }
