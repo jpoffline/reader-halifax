@@ -22,5 +22,6 @@ struct UNIQUE_ITEM{
         for(auto& i : u.indexes) output << i << " "; 
         output << "\n";
         return output;       
-      }
+    }
+    
 };

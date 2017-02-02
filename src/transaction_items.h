@@ -12,6 +12,7 @@ class TRANSACTION_ITEMS {
         bool has_collapsed_to_unique;
         std::vector<UNIQUE_ITEM<T> > unique_items;
     public:
+
         TRANSACTION_ITEMS()
         {
             has_collapsed_to_unique = false;
