@@ -27,7 +27,9 @@ Balance,
 
 class TRANSACTION_FILE
 {
-    private:
+
+    public:
+
         TRANSACTION_ITEMS<std::string> dates;
         TRANSACTION_ITEMS<std::string> types;
         TRANSACTION_ITEMS<std::string> sort_codes;
@@ -37,7 +39,7 @@ class TRANSACTION_FILE
         TRANSACTION_ITEMS<float> credit_amounts;
         TRANSACTION_ITEMS<float> balances;
         TIMESERIES time_series;
-    public:
+
         void read_file(std::string filename);
         void print_balances();
         void print_ordered_data();
@@ -46,6 +48,11 @@ class TRANSACTION_FILE
         void create_time_series();
         void print_time_series();
         HALIFAX_TRANSACTION_ROW get_row_for_idx(int i);
-        
+        TRANSACTION_ITEMS<float>& get_debit_amounts()
+        {
+            return debit_amounts;
+        }
+
+
 }; 
 

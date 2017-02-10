@@ -5,10 +5,13 @@
 void TRANSACTION_FILE::read_file(std::string filename)
 {
     std::ifstream myfilestream(filename);
+    std::cout << "* reading in " << filename << std::endl;
     while(!myfilestream.eof())
     {
         std::string line;
+        
         std::getline(myfilestream, line); // skip header
+
         while(std::getline(myfilestream, line))
         {
             std::istringstream iss(line);
@@ -42,6 +45,7 @@ void TRANSACTION_FILE::read_file(std::string filename)
             }
         }
     }
+
     myfilestream.close();
 
 }

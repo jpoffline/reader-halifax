@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include <algorithm>
 #include "unique_item.h"
 
 template<class T>
@@ -8,18 +9,39 @@ class TRANSACTION_ITEMS {
 
     private:
         std::vector<T> items;
-
+        std::vector<std::pair<int, T>> idx_items;
         bool has_collapsed_to_unique;
         std::vector<UNIQUE_ITEM<T> > unique_items;
+        struct Cmp_second{
+            bool operator()(const std::pair<int, T>& l, const std::pair<int, T>& r)const{
+                return l.second < r.second;
+            }
+        };
+
     public:
 
         TRANSACTION_ITEMS()
         {
             has_collapsed_to_unique = false;
         }
+        
+        void sort()
+        {
+            std::sort(begin(idx_items), end(idx_items), Cmp_second());
+        }
+
+        void print_idx_items(std::ostream& whereto)
+        {
+            for(auto& idx : idx_items)
+            {
+                whereto << idx.first << " " << idx.second << "\n";
+            }
+        }
+
         void add(T i)
         {
             items.push_back(i);
+            idx_items.push_back(std::make_pair(items.size() - 1, i));
             if(has_collapsed_to_unique)
             {
                 has_collapsed_to_unique = false;

@@ -1,0 +1,1 @@
+# Halifax bank data reader
